@@ -3,12 +3,15 @@
 #Configuration management#
 
 1)	Which ansible command can display all ansible_ configuration for a host?
+   
    Answer: Displaying Ansible configuration for a host command: # ansible -m setup hostname
   	
 2)	Please configure a cron job that runs logrotate on all machines every 10 minutes between 2h - 4h.
+   
    Answer: Please check the snapshot with the deployment file.
 
 3)	Please deploy ntpd package to the following 3 servers:
+   
    Answer: For the lab environment limitation, I used only one VM to apply for those jobs & here we can get the idea to run all jobs in the same ways. please check the snapshot and deployment file.
 
 
@@ -23,6 +26,7 @@ Requirements:
 Answer: Please check the docker-compose.yml file & snapshot to get the answer.
 
 2)	Which Kubernetes command you will use to identify the reason for a pod restart in the project "internal" under namespace "production".
+ 
    Answer: kubectl describe pod [pod name] -n production
 
 2)	Consider the followings:
@@ -46,6 +50,7 @@ Java-app keep restarting at random.  From Kubernetes configuration perspective, 
 #Helm#
 
 1. Please use the accompanied elasticsearch helm template to create a Kubernetes deployment of elasticsearch. Provide a screenshot & deployment yaml of the resultant deployment in Kubernetes.
+
    Answer: Please check the screenshot & deployment yaml to get the answer.
 
 
@@ -64,8 +69,7 @@ Java-app keep restarting at random.  From Kubernetes configuration perspective, 
 
 3)	How do you create custom Prometheus alerts and alerting rules for Kubernetes monitoring? Provide an example alert rule and its configuration.
 
-answer:
-To create  custom Prometheus alerts and alerting rules  for monitoring Kubernetes,  we follow these key steps:
+answer: To create  custom Prometheus alerts and alerting rules  for monitoring Kubernetes,  we follow these key steps:
 
 .  Define the Alerting Rule : Write an alerting rule in a YAML file using  PromQL .
 .  Configure Prometheus : Add the alerting rule to Prometheus by referencing it in the configuration.
