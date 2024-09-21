@@ -1,5 +1,3 @@
-Here is the reformatted write-up for a GitHub `README.md` file:
-
 ---
 
 # WSD Assessment
