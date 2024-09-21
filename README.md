@@ -36,7 +36,7 @@ ansible -m setup hostname
 - Docker should use a network bridge with the subnet `172.20.8.0/24`.
 
 **Answer:** Please refer to the `docker-compose.yml` file and snapshots.
-**Note:** here my IP was conflicted with the provided one that's why I am using the 172.25.8.0/25 range.
+**Note:** Here my IP was conflicted with the provided one that's why I am using the 172.25.8.0/24 range.
 
 ### 2) Identify reason for pod restart in Kubernetes
 **Question:** Which Kubernetes command will you use to identify the reason for a pod restart in the project "internal" under namespace "production"?  
