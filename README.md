@@ -1,91 +1,104 @@
-# wsd-assessment
+Here is the reformatted write-up for a GitHub `README.md` file:
 
-#Configuration management#
+---
 
-1)	Which ansible command can display all ansible_ configuration for a host?
-   
-   Answer: Displaying Ansible configuration for a host command: # ansible -m setup hostname
-  	
-2)	Please configure a cron job that runs logrotate on all machines every 10 minutes between 2h - 4h.
-   
-   Answer: Please check the snapshot with the deployment file.
+# WSD Assessment
+**Referring to check the snap & deployment file**
 
-3)	Please deploy ntpd package to the following 3 servers:
-   
-   Answer: For the lab environment limitation, I used only one VM to apply for those jobs & here we can get the idea to run all jobs in the same ways. please check the snapshot and deployment file.
+## Configuration Management
 
+### 1) Displaying Ansible configuration for a host
+**Question:** Which Ansible command can display all Ansible configuration for a host?  
+**Answer:** Use the following command:
 
-#Docker/Kubernetes#
-
-Suggested environment: Ubuntu 20 LTS, docker 19 or above
-1)	Prepare a docker-compose for a nginx server.
-Requirements:
-•	nginx logs need to survive between nginx container restarts
-•	docker should use network bridge subnet 172.20.8.0/24
-
-Answer: Please check the docker-compose.yml file & snapshot to get the answer.
-
-2)	Which Kubernetes command you will use to identify the reason for a pod restart in the project "internal" under namespace "production".
- 
-   Answer: kubectl describe pod [pod name] -n production
-
-2)	Consider the followings:
-POD NAME                                       CPU(cores)         MEMORY(bytes)
-java-app-7d9d44ccbf-lmvbc   java-app                  3m           951Mi
-java-app-7d9d44ccbf-lmvbc   java-app-logrotate        1m           45Mi
-java-app-7d9d44ccbf-lmvbc   java-app-fluentd          1m           84Mi
-java-app-7d9d44ccbf-lmvbc   mongos                    4m           62Mi
-
-Application pod has the following resource quota:
-•	Memory request & limit: 1000 & 1500
-•	CPU request & limit: 1000 & 2000
-•	Xmx of 1000M
-Java-app keep restarting at random.  From Kubernetes configuration perspective, what are the possible reasons for the pod restarts?
-
-   Answer: Here are some possible reasons for the Java app pod restarts:
-         .	The Xmx setting (1000M) is close to the memory request (1000Mi), leaving little room for other processes.
-         .	CPU limit may be reached during peak times.
-         .	Memory limit exceeded: The total memory usage (951Mi + 45Mi + 84Mi + 62Mi = 1142Mi) exceeds the memory limit of 1500Mi. when it reached the threshold of 80% quotas.
-
-#Helm#
-
-1. Please use the accompanied elasticsearch helm template to create a Kubernetes deployment of elasticsearch. Provide a screenshot & deployment yaml of the resultant deployment in Kubernetes.
-
-   Answer: Please check the screenshot & deployment yaml to get the answer.
+ansible -m setup hostname
 
 
-#Metrics#
+### 2) Configure a cron job for log rotation
+**Question:** Please configure a cron job that runs logrotate on all machines every 10 minutes between 2h - 4h.  
+**Answer:** Please refer to the snapshot and deployment file for the configuration.
 
-1)	Explain how Prometheus work.
+### 3) Deploy NTPD package on servers
+**Question:** Please deploy the NTPD package to the following 3 servers.  
+**Answer:** Due to lab environment limitations, I used only one VM to apply this job. You can follow the same approach for all jobs. Please check the snapshot and deployment file.
 
-  	 Answer: Answer: Prometheus is an open-source systems monitoring and alerting toolkit 
-     How Prometheus Works:
-     .	Target Discovery: Prometheus automatically discovers services (called "targets") from which it collects metrics. Targets expose an HTTP endpoint (usually /metrics) in a specific format that Prometheus understands.
-     .	Metrics Collection: Prometheus scrapes metrics from these endpoints at regular intervals. It pulls the data (metrics) instead of waiting for it to be pushed.
-     .	Storage: The scraped metrics are stored in a time-series database along with timestamps.
-     .	Querying: Users or other systems can query the collected data using PromQL (Prometheus Query Language). This data can be used for real-time monitoring and analysis.
-     .	Alerting: Based on defined thresholds, Prometheus evaluates rules and triggers alerts when specific conditions are met.
+---
 
+## Docker/Kubernetes
 
-3)	How do you create custom Prometheus alerts and alerting rules for Kubernetes monitoring? Provide an example alert rule and its configuration.
+### Suggested Environment
+- **OS:** Ubuntu 20 LTS
+- **Docker Version:** Docker 19 or above
 
-answer: To create  custom Prometheus alerts and alerting rules  for monitoring Kubernetes,  we follow these key steps:
+### 1) Prepare Docker Compose for Nginx Server
+**Requirements:**
+- Nginx logs need to persist between container restarts.
+- Docker should use a network bridge with the subnet `172.20.8.0/24`.
 
-.  Define the Alerting Rule : Write an alerting rule in a YAML file using  PromQL .
-.  Configure Prometheus : Add the alerting rule to Prometheus by referencing it in the configuration.
-.  Alertmanager Integration : Configure  Alertmanager  to receive and handle alerts (e.g., sending notifications to email, Slack, etc.).
+**Answer:** Please refer to the `docker-compose.yml` file and snapshots.
+**Note:** here my IP was conflicted with the provided one that's why I am using the 172.25.8.0/25 range.
 
-Steps:
+### 2) Identify reason for pod restart in Kubernetes
+**Question:** Which Kubernetes command will you use to identify the reason for a pod restart in the project "internal" under namespace "production"?  
+**Answer:** 
+```bash
+kubectl describe pod [pod-name] -n production
+```
 
- # 1. Create an Alerting Rule
+### 3) Analyze pod resource quota for restarts
+**Scenario:**  
+Application pod resource usage is as follows:
 
-Alerting rules evaluate metrics collected by Prometheus and trigger alerts based on certain conditions.
+| Pod Name               | CPU (cores) | Memory (bytes) |
+|------------------------|-------------|----------------|
+| java-app-7d9d44ccbf    | 3m          | 951Mi          |
+| java-app-logrotate     | 1m          | 45Mi           |
+| java-app-fluentd       | 1m          | 84Mi           |
+| mongos                 | 4m          | 62Mi           |
 
-For example, let's say we want to create a custom alert if the  CPU usage  of a Kubernetes pod exceeds  80%  for more than 5 minutes.
+Resource quotas:
+- **Memory:** Request 1000Mi, Limit 1500Mi
+- **CPU:** Request 1000m, Limit 2000m
+- **Xmx:** 1000M
 
- Example Alert Rule: 
+**Question:** Why does the Java app keep restarting?  
+**Answer:** Possible reasons include:
+- The Xmx setting (1000M) is too close to the memory request (1000Mi), leaving little overhead.
+- CPU limit might be exceeded during peak usage.
+- Memory limit may be exceeded since total memory usage is 1142Mi, which is close to the limit (1500Mi).
 
- yaml
+---
+
+## Helm
+
+### 1) Deploy Elasticsearch using Helm
+**Question:** Use the accompanying Elasticsearch Helm template to deploy Elasticsearch.  
+**Answer:** Please refer to the screenshot and deployment YAML file. 
+**note** Due to lab environment limitations, I used only one VM for Master & another one is Worker to apply for this job. we can follow the same approach for all jobs. Please check the snapshot and deployment file.
+
+---
+
+## Metrics
+
+### 1) How Prometheus Works
+**Question:** Explain how Prometheus works.  
+**Answer:**  
+Prometheus is an open-source monitoring and alerting toolkit. Here's how it works:
+- **Target Discovery:** Prometheus discovers services (targets) to collect metrics from.
+- **Metrics Collection:** Prometheus scrapes metrics from HTTP endpoints at regular intervals.
+- **Storage:** Metrics are stored in a time-series database with timestamps.
+- **Querying:** Users query data using PromQL for real-time monitoring.
+- **Alerting:** Prometheus triggers alerts based on defined thresholds.
+
+### 2) Creating Custom Prometheus Alerts
+**Question:** How do you create custom Prometheus alerts for Kubernetes monitoring?  
+**Answer:** Follow these steps:
+1. **Define Alerting Rule** in a YAML file using PromQL.
+2. **Configure Prometheus** by adding the alert rule to its configuration.
+3. **Integrate Alertmanager** to handle notifications.
+
+**Example Alert Rule (High CPU Usage Alert):**
+```yaml
 groups:
   - name: k8s-monitoring
     rules:
@@ -97,97 +110,35 @@ groups:
         annotations:
           summary: "High CPU usage detected for pod {{ $labels.pod_name }}"
           description: "CPU usage for pod {{ $labels.pod_name }} is above 80% for more than 5 minutes."
- 
+```
 
- # Explanation:
--  alert : Name of the alert (`HighPodCPUUsage`).
--  expr : PromQL expression. This query calculates CPU usage by dividing the CPU usage rate of a pod by its requested CPU cores and then multiplies by 100 to get a percentage. If it exceeds 80%, the alert triggers.
--  for : Ensures that the condition must persist for at least 5 minutes before the alert is triggered.
--  labels : Adds additional metadata to the alert. `severity: warning` indicates the severity level.
--  annotations : Provide additional information about the alert, like a summary and description.
+### 3) Prometheus Query for Grafana
+**Question:** What is the Prometheus query for visualizing the usage trend of an application metric that is a counter?  
+**Answer:** Use the `rate()` function:
+```promql
+rate(my_metric_name[5m])
+```
+- `rate(my_metric_name[5m])` calculates the average per-second rate of increase over 5 minutes.
 
- # Add the Rule to Prometheus Configuration
+---
 
-Save the alert rule in a file, e.g., `k8s-alert-rules.yaml`.
+## Databases
 
-Next, update  our Prometheus configuration to load this alert rule.
+### Cassandra
+**Question:** Query to the Cassandra DB cluster returns different results. Why and how can this be avoided?  
+**Answer:**
+- Ensure all nodes are up and synchronized.
+- Use consistency level `QUORUM` or `ALL` for critical reads.
+- Perform regular read repairs.
+- Use `nodetool repair` for manual repairs.
 
-Edit  our `prometheus.yml` to reference the alert rule file:
-
- yaml
-rule_files:
-  - 'k8s-alert-rules.yaml'
- 
-
-Now Prometheus knows to load and apply the alerting rule.
-
- # Apply the Configuration in Kubernetes
-
-If  we're using Prometheus in Kubernetes,  we'll typically deploy it using Helm or a Prometheus Operator.  we need to ensure that  our alerting rules are loaded by the Prometheus instance running in  the Kubernetes cluster.
-
-- If using  Helm ,  we can add our custom rule file to the `rules` directory or pass it through the `values.yaml` file.
-  
-- If using  Prometheus Operator, create a `PrometheusRule` custom resource that defines the rules. Example:
-
- yaml
-apiVersion: monitoring.coreos.com/v1
-kind: PrometheusRule
-metadata:
-  name: k8s-monitoring-rules
-  namespace: monitoring
-spec:
-  groups:
-  - name: k8s-monitoring
-    rules:
-    - alert: HighPodCPUUsage
-      expr: 100 * (sum(rate(container_cpu_usage_seconds_total{image!=""}[5m])) BY (pod_name)) / sum(kube_pod_container_resource_requests_cpu_cores) BY (pod_name) > 80
-      for: 5m
-      labels:
-        severity: warning
-      annotations:
-        summary: "High CPU usage detected for pod {{ $labels.pod_name }}"
-        description: "CPU usage for pod {{ $labels.pod_name }} is above 80% for more than 5 minutes."
- 
-
-Apply this resource to our Kubernetes cluster:   kubectl apply -f k8s-alert-rules.yaml
-
-   
-4)	What is the Prometheus query you can use in Granfana to properly show usage trend of an application metric that is a counter?
-
-Answer: To properly visualize the usage trend of a counter metric in Grafana using Prometheus, we should use the rate() or irate() function. 
-These functions compute the per-second average rate of increase for a counter metric over a specified time window.
-
-Prometheus Query:  rate(my_metric_name[5m])
-
-•  rate(your_metric_name[5m]): This calculates the average per-second rate of increase for the counter my_metric_name over the last 5 minutes.
-•  irate(): Use irate() for a more instant rate over the last two data points, but for trends, rate() is more stable.
-
-#Databases#
-
-Suggested environment: Cassandra 4.0 or above, mongo 4.4.0 or above
-1)	Cassandra
-Query to db cluster returns different result each time.  Users reported query result has data records that they deleted days ago.  
-Explain what the likely reason for the behavior and how to avoid it.
-
-  Answer: To avoid inconsistent query results:
-        .	Ensure all nodes are up and synchronized
-        .	Use consistency level QUORUM or ALL for critical reads
-        .	Perform read repair regularly
-        .	Use nodetool repair for manual repairs
-
-
-2)	Mongo
-We have mongodb replicaset_1 with the following db and collections with some records....
-A sample record from company_name:
- 
-
-Performance is bad as the hardware of replicaset_1 is not capable to handle the database sanfrancisco.  We added a new replicaset_2.  
-Please provide all steps required to shard the collection sanfrancisco.company_name based on _id.
-
-Answer: To set up a MongoDB ReplicaSet:
-1.	Start three MongoDB instances
-2.	Connect to one instance and initiate the replica set:
-  	 rs.initiate({
+### MongoDB
+**Question:** How do you shard the `sanfrancisco.company_name` collection based on `_id` in MongoDB?  
+**Answer:** Follow these steps:
+1. Start three MongoDB instances.
+2. Connect to one instance and initiate the replica set:
+```js
+rs.initiate({
   _id: "replicaset_1",
   members: [
     { _id: 0, host: "mongo1:27017" },
@@ -195,16 +146,7 @@ Answer: To set up a MongoDB ReplicaSet:
     { _id: 2, host: "mongo3:27017" }
   ]
 })
+```
+3. Verify the replica set status with `rs.status()`.
 
- 
-Verify the replica set status:  rs.status()
-
-
-
-
-
-
-
-
-
-
+---
