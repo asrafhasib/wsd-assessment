@@ -19,7 +19,7 @@ ansible -m setup hostname
 
 ### 3) Deploy NTPD package on servers
 **Question:** Please deploy the NTPD package to the following 3 servers.  
-**Answer:** Due to lab environment limitations, I used only one VM to apply this job. You can follow the same approach for all jobs. Please check the snapshot and deployment file.
+**Answer:** Due to lab environment limitations, I used only one VM to apply this job. we can follow the same approach for all jobs. Please check the snapshot and deployment file.
 
 ---
 
